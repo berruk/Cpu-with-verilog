@@ -1,0 +1,20 @@
+
+module register(enable,reset, clk, D, Q);
+input reset;
+  input enable;
+input clk;
+input [7:0] D;
+output [7:0] Q;
+reg [7:0] Q;
+  always @(negedge clk)
+if(~enable)
+Q = Q;
+  
+else if (reset)
+Q = 0;
+    
+else
+Q = D;
+  
+  
+endmodule 
