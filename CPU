@@ -1,0 +1,34 @@
+module insdec(input[20:0] INS,
+                      input zero,
+                      output[2:0] mux1,
+                      output[2:0] mux2,
+                      output[2:0] des,
+                      output[7:0] im,
+                      output[2:0] op,
+                      output aluen,
+              
+        );        
+          assign aluen = ~INS[20] | (~zero&INS[20]);
+          assign op = INS[19:17];
+          assign im = INS[16:9];
+          assign mux1 = INS[8:6];
+          assign mux2 = INS[5:3];
+          assign des = INS[2:0];
+            
+        endmodule
+        
+module CPU(input[20:0] INS, input rst, input clk);
+  reg[7:0] reg0,reg1,reg2,reg3,reg4,reg5,reg6,im,aluout;
+  reg[7:0] src1,src2;
+  reg zero,aluen;
+  reg[2:0] mux1,mux2,des,op;
+  
+  insdec i(INS,zero,mux1,mux2,des,im,op,aluen);
+  regfile r(des,clk,rst,aluout,reg0,reg1,reg2,reg3,reg4,reg5,reg6);
+  alu a(src1,src2,op,aluen,aluout,zero);
+  mux m1(src1,mux1,reg0,reg1,reg2,reg3,reg4,reg5,reg6,im);
+  mux m2(src2,mux2,reg0,reg1,reg2,reg3,reg4,reg5,reg6,im);
+  
+  
+  
+endmodule
