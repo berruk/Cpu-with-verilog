@@ -1,0 +1,24 @@
+
+module regfile(input[2:0] dst,input ld,input clk,input rst,input[7:0] datain,
+               output[7:0] reg_out0,
+               output[7:0] reg_out1,
+               output[7:0] reg_out2,
+               output[7:0] reg_out3,
+               output[7:0] reg_out4,
+               output[7:0] reg_out5,
+               output[7:0] reg_out6,
+               output[7:0] reg_out7,
+              
+              );
+  wire d0,d1,d2,d3,d4,d5,d6,d7;
+  decoder d(dst[2],dst[1],dst[0],ld,d0,d1,d2,d3,d4,d5,d6,d7);
+  register r0(d0,rst,clk,datain,reg_out0);
+  register r1(d1,rst,clk,datain,reg_out1);
+  register r2(d2,rst,clk,datain,reg_out2);
+  register r3(d3,rst,clk,datain,reg_out3);
+  register r4(d4,rst,clk,datain,reg_out4);
+  register r5(d5,rst,clk,datain,reg_out5);
+  register r6(d6,rst,clk,datain,reg_out6);
+  register r7(d7,rst,clk,datain,reg_out7);
+
+endmodule
