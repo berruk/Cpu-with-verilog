@@ -1,0 +1,60 @@
+module alu(
+           input [7:0] A,B,  // ALU 8-bit Inputs                 
+           input [3:0] ALU_Sel,// ALU Selection
+  		   input en,
+           output [7:0] ALU_Out, // ALU 8-bit Output
+           output Zero // Carry Out Flag
+    );
+    reg [7:0] ALU_Result;
+    wire tmp;
+    assign ALU_Out = ALU_Result; // ALU out
+
+  	assign Zero = tmp; // Carryout flag
+    always @(*)
+    begin
+      case({ALU_Sel,en})
+        4'b0001: // ADD
+           ALU_Result = A + B ; 
+        4'b0011: // SUB
+           ALU_Result = A - B ;
+        4'b0101: // LSL
+           ALU_Result = A<<1;
+        4'b0111: // LD
+           ALU_Result = A;
+        4'b1001: // AND
+           ALU_Result = A & B;
+         4'b1011: // OR
+           ALU_Result = A | B;
+         4'b1101: // XOR
+           ALU_Result = A^B;
+         4'b1111: // NOT
+           ALU_Result = ~A;
+        /*
+        4'b0000: 
+           ALU_Result <= 4'dz; 
+        4'b0010: 
+           ALU_Result <= 4'dZ ;
+        4'b0100: 
+           ALU_Result <= 4'dZ;
+        4'b0110: 
+           ALU_Result <= 4'dZ;
+        4'b1000: 
+           ALU_Result <= 4'dZ;
+         4'b1010: 
+           ALU_Result <= 4'dZ;
+         4'b1100: 
+           ALU_Result <= 4'dZ;
+         4'b1110: 
+           ALU_Result <= 4'dZ;*/
+
+
+        endcase
+
+    end
+  always @(*)
+    begin
+      if(~ALU_Result)
+        tmp <= 1;
+    end
+
+endmodule
