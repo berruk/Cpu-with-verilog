@@ -1,0 +1,106 @@
+module not_gate(
+input i_1,
+output i_2
+);
+ 
+assign i_2=~i_1;
+ 
+endmodule
+
+module and_gate(i_1, i_2, o); 
+
+input wire i_1; 
+input wire i_2;
+output wire o;
+assign o = i_1 & i_2;
+
+endmodule
+
+module or_gate(i_1, i_2, o); 
+
+input wire i_1; 
+input wire i_2;
+output wire o;
+assign o = i_1 | i_2;
+
+endmodule
+
+module xor_gate(i_1, i_2, o); 
+
+input wire i_1; 
+input wire i_2;
+logic x1,x2;
+output wire o ;
+  not_gate n1(i_1,x1);
+  not_gate n2(i_2,x2);
+
+  assign o = (x1 & i_2) | ( x2 & i_1);
+
+endmodule
+
+// Half adder
+module halfadder(
+  input a, 
+  input b,
+  output o,
+  output c
+);
+  logic o1,o2;
+  and_gate a1(a ,b ,o1);
+  xor_gate a2(a ,b ,o2);
+
+  assign o = o2;
+  assign c = o1;
+
+endmodule
+
+// Full adder
+module fulladder(
+  input a,
+  input b,
+  input d,
+  output o,
+  output c
+);
+
+  logic t, c1, c2;
+
+  halfadder ha1(a, b, t, c1);
+  halfadder ha2(t, d, o, c2);
+
+  assign c = c1 | c2;
+
+endmodule
+
+
+module bitfulladdsub(a,b,sub,s,cout);
+
+  input wire [7:0] a;
+  input wire [7:0] b;
+  input wire sub;
+  logic w1 ,w2 ,w3 ,w4 ,w5 ,w6, w7;
+  logic o1,o2,o3,o4,o5,o6,o7;
+
+  output wire [7:0] s;
+ output wire cout;
+  xor_gate x1(sub ,b[0] ,o1);
+  xor_gate x2(sub ,b[1] ,o2);
+  xor_gate x3(sub ,b[2] ,o3);
+  xor_gate x4(sub ,b[3] ,o4);
+  xor_gate x5(sub ,b[4] ,o5);
+  xor_gate x6(sub ,b[5] ,o6);
+  xor_gate x7(sub ,b[6] ,o7);
+  xor_gate x8(sub ,b[7] ,o8);
+
+  fulladder F1(a[0],o1,cin,s[0],w1);
+  fulladder F2(a[1],o2,w1,s[1],w2);
+  fulladder F3(a[2],o3,w2,s[2],w3);
+  fulladder F4(a[3],o4,w3,s[3],w4);
+  fulladder F5(a[4],o5,w4,s[4],w5);
+  fulladder F6(a[5],o6,w5,s[5],w6);
+  fulladder F7(a[6],o7,w6,s[6],w7);
+  fulladder F8(a[7],o8,w7,s[7],cout);
+
+
+
+endmodule
