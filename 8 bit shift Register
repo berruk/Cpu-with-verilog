@@ -1,0 +1,32 @@
+module notgate( input A, output B);
+  assign B = ~A;
+    
+endmodule
+module shiftReg8(input [7:0] I,
+  input clock,
+  input load,
+  output shift_out
+);
+  reg bit0,bit1,bit2,bit3,bit4,bit5,bit6,bit7;
+	reg l;
+  notgate n1(load,l);
+
+assign shift_out = bit7;
+  
+  always @(posedge clock)
+    begin
+
+      bit7 <= (bit0 &  l) | (I[7] & load ) ;
+      bit6 <= (bit7 &  l) | (I[6] & load ) ;
+      bit5 <= (bit6 &  l) | (I[5] & load ) ;
+      bit4 <= (bit5 &  l) | (I[4] & load ) ;
+      bit3 <= (bit4 &  l) | (I[3] & load ) ;
+      bit2 <= (bit3 &  l) | (I[2] & load ) ;
+      bit1 <= (bit2 &  l) | (I[1] & load ) ;
+      bit0 <= (bit1 &  l) | (I[0] & load ) ;
+
+    end
+     
+
+
+endmodule
